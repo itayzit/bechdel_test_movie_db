@@ -9,9 +9,12 @@ OVERVIEW_SPEC = {
 
 # cnx = utils.connect_to_db()
 # cursor = cnx.cursor()
-
+stmt = (
+    f"INSERT INTO overviews ({', '.join(list(OVERVIEW_SPEC.keys()))}) "
+    "VALUES (%s, %s)"
+)
 added_overviews = 0
-for movie_id in range(5):
+for movie_id in range(20):
     start = timer()
     try:
         r = requests.get(
@@ -27,13 +30,13 @@ for movie_id in range(5):
             gamla.apply_spec(OVERVIEW_SPEC),
         )
         # try:
-        #     cursor.execute(stmt, tuple(movie.values()))
+        #     cursor.execute(stmt, tuple(overview.values()))
         # except:
-        #     print("could not insert", tuple(movie.values()))
-        print(overview)
+        #     print("could not insert", tuple(overview.values()))
+        # print(overview)
         added_overviews += 1
         if added_overviews % 100 == 0:
-            print("commiting movies till:", movie_id, "last movie:", overview)
+            print("commiting overviews till:", movie_id, "last one:", overview)
             # cnx.commit()
             # print("finished commiting")
             print("--- %s seconds ---" % (timer() - start))

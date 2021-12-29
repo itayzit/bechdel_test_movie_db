@@ -4,6 +4,10 @@ from timeit import default_timer as timer
 
 # cnx = utils.connect_to_db()
 # cursor = cnx.cursor()
+stmt = (
+    f"INSERT INTO us_flatrate_watch_providers (movie_id, provider_name) "
+    "VALUES (%s, %s)"
+)
 added_providers = 0
 
 for movie_id in range(100):
@@ -37,5 +41,3 @@ for movie_id in range(100):
         #     print("--- %s seconds ---" % (timer() - start))
     except Exception as e:
         print("Error!", movie_id, "\n", e)
-
-# print(added_providers)

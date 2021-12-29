@@ -3,6 +3,8 @@ from timeit import default_timer as timer
 
 import requests
 
+import utils
+
 ACTOR_SPEC = {
     "actor_id": gamla.itemgetter("id"),
     "name": gamla.itemgetter("name"),
@@ -18,12 +20,11 @@ ACTOR_SPEC = {
         ),
     ),
 }
-# cnx = utils.connect_to_db()
-# cursor = cnx.cursor()
+cnx = utils.connect_to_db()
+cursor = cnx.cursor()
 added_actors = 0
-insert_actor_stmt = (
-    f"INSERT INTO actors ({', '.join(list(ACTOR_SPEC.keys()))}) "
-    "VALUES (%s, %s, %s, %s, %s)"
+stmt = (
+    f"INSERT INTO actors ({', '.join(list(ACTOR_SPEC.keys()))}) " "VALUES (%s, %s, %s)"
 )
 
 for actor_id in range(5):
@@ -42,15 +43,15 @@ for actor_id in range(5):
             gamla.apply_spec(ACTOR_SPEC),
         )
         print(actor)
-        # try:
-        #     cursor.execute(stmt, tuple(movie.values()))
-        # except:
-        #     print("could not insert", tuple(movie.values()))
+        try:
+            cursor.execute(stmt, tuple(actor.values()))
+        except:
+            print("could not insert", tuple(actor.values()))
         added_actors += 1
         if added_actors % 100 == 0:
-            print("commiting movies till:", actor_id, "last movie:", actor)
-            # cnx.commit()
-            # print("finished commiting")
+            print("commiting actors till:", actor_id, "last one:", actor)
+            cnx.commit()
+            print("finished commiting")
             print("--- %s seconds ---" % (timer() - start))
     except Exception as e:
         print("Error!", actor_id, "\n", e)

@@ -2,6 +2,10 @@ import gamla
 import requests
 from timeit import default_timer as timer
 
+# cnx = utils.connect_to_db()
+# cursor = cnx.cursor()
+stmt = f"INSERT INTO movie_actors (movie_id, actor_id) " "VALUES (%s, %s)"
+
 added_actors = 0
 for movie_id in range(5):
     start = timer()
