@@ -14,7 +14,7 @@ problematics = set()
 cnx = utils.connect_to_db()
 cursor = cnx.cursor()
 start = timer()
-for id_ in range(1000):
+for id_ in range(3700, 10000):
     m = a = p = ma = []
     try:
         m = requests.get(movies.request_url(id_))
@@ -52,7 +52,7 @@ for id_ in range(1000):
             cursor.execute(overviews.stmt, tuple(overview.values()))
         except Exception as e:
             problematics.add(id_)
-            print("could not insert", id_, "error", e)
+            print("could not insert movie or overview", id_, "error", e)
 
     if a and a.status_code == 200:
         actor = gamla.pipe(a, lambda x: x.json(), gamla.apply_spec(actors.ACTOR_SPEC))
@@ -60,7 +60,7 @@ for id_ in range(1000):
             cursor.execute(actors.stmt, tuple(actor.values()))
         except Exception as e:
             problematics.add(id_)
-            print("could not insert", id_, "error", e)
+            print("could not insert actor", id_, "error", e)
     if p and p.status_code == 200:
         providers_per_movie = gamla.pipe(
             p, us_flatrate_watch_providers.providers_per_movie(id_)
@@ -70,7 +70,7 @@ for id_ in range(1000):
                 cursor.execute(us_flatrate_watch_providers.stmt, movie_and_provider)
         except Exception as e:
             problematics.add(id_)
-            print("could not insert", id_, "error", e)
+            print("could not insert movie and providers", id_, "error", e)
     if ma and ma.status_code == 200:
         actors_per_movie = gamla.pipe(ma, movie_actors.actors_per_movie(id_))
         try:
@@ -78,7 +78,7 @@ for id_ in range(1000):
                 cursor.execute(movie_actors.stmt, movie_and_actor)
         except Exception as e:
             problematics.add(id_)
-            print("could not insert", id_, "error", e)
+            print("could not insert movie and actors", id_, "error", e)
 
     if id_ % 100 == 0:
         print("commiting till:", id_)

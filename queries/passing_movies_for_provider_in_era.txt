@@ -1,0 +1,6 @@
+select m.title as passing_movies_for
+from movies m, us_flatrate_watch_providers p
+where m.is_bechdel = 1
+and m.movie_id = p.movie_id
+and '%d' < m.release_year < '%d'
+and p.name = '%s'

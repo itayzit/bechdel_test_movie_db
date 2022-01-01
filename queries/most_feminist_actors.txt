@@ -1,0 +1,12 @@
+select a.name, num_movies
+from actors a join (
+select ma.actor_id, count(ma.movie_id) as num_movies
+from movie_actors ma, movies m
+where ma.movie_id = m.movie_id
+and m.is_bechdel = 1
+group by ma.actor_id
+) as movies_per_actor
+where a.actor_id = movies_per_actor.actor_id
+and a.gender = '%s'
+order by num_movies desc
+limit 10

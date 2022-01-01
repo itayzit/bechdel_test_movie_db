@@ -1,0 +1,7 @@
+select p.name, count(m.movie_id) as num_movies
+from us_flatrate_watch_providers p, movies m
+where m.movie_id = p.movie_id
+and m.is_bechdel = 1
+group by p.name
+order by num_movies desc
+limit 10

@@ -1,0 +1,6 @@
+select m.title as passing_movies_with_actor
+from movies m, actors a, movie_actors ma
+where a.actor_id = ma.actor_id
+and m.is_bechdel = 1
+and m.movie_id = ma.movie_id
+and a.name = '%s'

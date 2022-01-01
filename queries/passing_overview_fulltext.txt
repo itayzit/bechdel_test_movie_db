@@ -1,0 +1,5 @@
+select m.title, o.overview
+from overviews o, movies m
+where m.movie_id = o.movie_id
+and m.is_bechdel = 1
+and match(o.overview) against ('%s' in boolean mode)
