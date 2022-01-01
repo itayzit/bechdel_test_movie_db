@@ -33,7 +33,7 @@ def best_passing_movies_by_criterion(criterion: str):
 
 def most_feminist_providers():
     """Providers with the most bechdel test passing movies."""
-    print(_run("queries/most_feminist_actors.txt", ()))
+    print(_run("queries/most_feminist_providers.txt", ()))
 
 
 def most_feminist_years():
