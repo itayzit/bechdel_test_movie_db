@@ -17,7 +17,7 @@ cnx = connection.connect_to_db()
 cursor = cnx.cursor()
 start = timer()
 for id_ in range(40000):
-    m = a = p = ma = []
+    m, a, p, ma = [[], [], [], []]
     try:
         m = requests.get(movies.request_url(id_))
     except Exception as e:
