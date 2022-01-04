@@ -1,3 +1,5 @@
+import csv
+
 import requests
 import gamla
 
@@ -8,13 +10,13 @@ import movie_actors
 import movies
 import overviews
 import us_flatrate_watch_providers
-import utils
+import connection
 
 problematics = set()
-cnx = utils.connect_to_db()
+cnx = connection.connect_to_db()
 cursor = cnx.cursor()
 start = timer()
-for id_ in range(3700, 10000):
+for id_ in range(40000):
     m = a = p = ma = []
     try:
         m = requests.get(movies.request_url(id_))
@@ -37,6 +39,7 @@ for id_ in range(3700, 10000):
         problematics.add(id_)
         print("Error!", id_, "\n", e)
 
+    # For each API request, create the final values to be written and write them to DB.
     if m and m.status_code == 200:
         movie, overview = gamla.pipe(
             m,
@@ -79,7 +82,7 @@ for id_ in range(3700, 10000):
         except Exception as e:
             problematics.add(id_)
             print("could not insert movie and actors", id_, "error", e)
-
+    # Every 100 ids, commit.
     if id_ % 100 == 0:
         print("commiting till:", id_)
         cnx.commit()

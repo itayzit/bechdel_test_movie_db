@@ -9,7 +9,7 @@ def actors_per_movie(movie_id):
         gamla.itemgetter("cast"),
         gamla.filter(
             gamla.compose_left(
-                gamla.itemgetter("known_for_department"), gamla.equals("Acting")
+                gamla.itemgetter_or_none("known_for_department"), gamla.equals("Acting")
             )
         ),
         gamla.map(gamla.itemgetter("id")),

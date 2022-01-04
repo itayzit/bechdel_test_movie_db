@@ -1,6 +1,6 @@
-import utils
+import connection
 
-cnx = utils.connect_to_db()
+cnx = connection.connect_to_db()
 cursor = cnx.cursor()
 
 
